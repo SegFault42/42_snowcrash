@@ -1,0 +1,16 @@
+1) cat /etc/passwd (fichier ou se trouve tout les password de chaque user)
+
+l'user flag 01 a son mot de passe chiffrer dans champs du mot de passe.
+
+2) scp -P 4242 level01@10.13.0.241:/etc/passwd /Users/rabougue/Documents/42_snowcrash/level01
+
+copie du fichier sur la machine.
+
+3) ensuite il faut utiliser john pour dechiffrer le password 
+
+./john passwd
+
+
+Ressource :
+
+http://www.linux-france.org/article/sys/lame/html/x829.html

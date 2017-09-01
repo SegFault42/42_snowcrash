@@ -1,0 +1,27 @@
+1) Recuperer tout les fichiers avec l'user flag00
+
+ls -laR / | grep level00
+
+2 fichiers john trouver.
+
+2) Trouver l'emplacement du fichier dans le disque
+
+find / -name "john"
+
+/usr/sbin/john
+
+3) cat /usr/sbin/john
+
+cdiiddwpgswtgt
+
+4) faire un rot de toute les valeurs possible
+
+http://www.dcode.fr/chiffre-cesar
+
+on remarque avec un rot15 que la string est nottohardhere
+
+su flag00
+paswword: nottohardhere
+
+getflag
+Check flag.Here is your token : x24ti5gi3x0ol2eh4esiuxias
