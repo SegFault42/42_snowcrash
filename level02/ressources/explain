@@ -1,0 +1,13 @@
+https://samsclass.info/120/proj/p3-wireshark.htm
+
+1) recuper le .pcap
+
+scp -P 4242 level02@192.168.0.15:/home/user/level02/level02.pcap .
+
+2) ouvrir le pcap avec wireshark
+
+3) clique droit sur un paquet > follow > TCP stream
+
+4) dans la nouvelle fenetre on a le champ : Password: ft_wandr...NDRel.L0L
+
+le point signifie un backspace. le mot de passe et donc ft_waNDReL0L
