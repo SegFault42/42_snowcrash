@@ -1,0 +1,58 @@
+stickybit exploit
+
+1) nm -u ~/level03
+
+On voit que system est utiliser. Sans doute pour afficher la string "Exploit me"
+
+2) strings ~/level03 | sort -u
+
+Si on tape la commande "stings level03 | sort -u"
+
+on a cette ligne
+
+/usr/bin/env echo Exploit me
+
+ce qui montre que le programme affiche la string Exploit me grace a la commande du shell echo.
+
+il y a donc dans le code une ligne qui devrait ressembler a sa : "system("echo Exploit me");"
+
+3) ls -la level03
+
+on voit que l'autorisation d'executer contient un s au lieu du x et que le fichier appartient a flag03
+
+-rwsr-sr-x 1 flag03 level03 8627 Mar  5  2016 level03
+
+s signifie que lors de l'execution du programme le prgramme va etre lancer par flag03
+
+il y a une faille dans la fonction "system" qui permet de lancer un autre binaire a la place de celui demander dans le code.
+
+system utilise la variabe d'environement PATH et cherche si le binaire demander ce trouve dedans.
+
+si on set la variable PATH avec un path ou nous avons les droits d'ecriture par exemple /tmp/, nous pouvons faire un lien de /bin/bash dans /tmp et le renomer en echo
+
+Ce qui aurat pour effet de lancer le lien symbolique qui pointe sur /bin/bash avec les droits de flag03
+
+4) ln -s /bin/bash /tmp/echo
+5) PATH=/tmp:$PATH
+
+si on execute mainteant level03 on aura une erreur.
+
+on donne a /bin/bash les arguments "Exploit me"
+
+il suffit de cree un fichier "Exploit" qui contient une commande qui apelle un shell par exemple /bin/bash
+
+6) echo "/bin/bash" > /tmp/Exploit
+
+si on execute depuis /tmp ~/level03
+
+7) cd /tmp ; ~/level03
+
+nous avons /bin/bash qui est executer avec les droits de flag03.
+ 
+si on fait whoami, on voit bien que nous somme dans un shell avec l'user flag03
+
+8) cd /home/flag/flag03
+
+j' ai recuperer le home de flag03 dans /etc/passwd
+
+si on fait ls on a notre fichier readme qui nous dit de faire un getflag :)
