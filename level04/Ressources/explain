@@ -1,0 +1,12 @@
+Nous avons un fichier perl qui utilise des CGI param
+il y a aussi la ligne "x(param("x"))". Nous devons donc passer notre param dans la variable x
+
+par exemple x="param"
+
+on nous donne le port ouvert pour se connecter a l'index.html su server apache qui se trouve dans /var/www/index.html
+
+Si on essaye de mettre getflag dans la variable x nous avons notre token qui s'affiche
+
+Sur un navigateur http://10.13.0.240:4747/?x="getflag"
+
+Nous avons get flag d'afficher. Si on remplace les '"' par '`' (comme le echo dans le .pl) nous avons notre token :) 
