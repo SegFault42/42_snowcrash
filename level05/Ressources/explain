@@ -1,0 +1,17 @@
+You have new mail.
+
+Apres quelque recherche sur internet, j'ai trouver que les mail sont dans /var/mail
+
+Suprise !! Dans /var/mail il y a un fichier level05 qui contient un/une crontab
+
+la/le crontab execute avec les droits root le script qui est dans /usr/sbin/openarenaserver toutes les 30 secondes (*/2)
+
+Ce script execute tout les scripts contenue dans le dossier /opt/openarenaserver puis les supprimes.
+
+Donc si je met un script qui contient su flag05 et getflag, ces 2 commandes devrait s'executer avec les droits root.
+
+N'oublions pas de rediriger la sortie dans un fichier pour voir l'output des commandes
+
+Donc il faut cree le script qui execute les 2 commandes (voir le fichier exec), lui donner les droits d'execution (chmod +x exec) et attendre maximum 30 secondes pour que la/le crontab execute le premier script.
+
+ensuite cat le fichier avec la sortie de getflag et BINGO !!!!! 

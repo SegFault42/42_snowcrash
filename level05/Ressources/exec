@@ -1,0 +1,4 @@
+#!/bin/bash
+
+su flag05 > /tmp/flag05
+getflag > /tmp/getflag
