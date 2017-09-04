@@ -1,0 +1,13 @@
+http://v0ids3curity.blogspot.fr/2012/12/exploit-exercise-php-pregreplace.html
+
+Nous avons une regex avec un /e a la fin. Ce qui signifie que l'on peut executer une commande.
+
+Nous avons aussi un binaire qui execute le .php avec execve. Voir "strings level06"
+
+Si on analyse la regex dans la fonction x elle remplace le deuxieme parametre de la fonction preg_replace dans le groupe 2 du premier parametre.
+
+Donc si nous mettons dans argv[1] "[x {${@system(bash)}}]" et que nous executons le binaire, la regex va exectuer system(bash) et lancer un shell avec les droits de flag06.
+
+Petite subtiliter, le programme prend en entree un fichier, il faut donc mettre la regex dans un fichier et le passer en parametre.
+
+Il reste plus qu'a faire un get flag pour avoir le token
