@@ -1,0 +1,31 @@
+Dans cette exercice nous avons les droits de lecture sur le fichier token.
+
+Voila l'output de "cat token" : f4kmm6p|=p�n��DB�Du��
+
+Nous avons des caractere non ascii donc j'utilsie hexdump pour voir toute la chaine en hexadecimal
+
+l'output de "hexdump -C token "
+
+00000000  66 34 6b 6d 6d 36 70 7c  3d 82 7f 70 82 6e 83 82  |f4kmm6p|=..p.n..|
+00000010  44 42 83 44 75 7b 7f 8c  89 0a                    |DB.Du{....|
+0000001a
+
+Le token a ete chiffre.
+
+Si on analyse comment fonction level09 en lui passant en argument "aaaaaaaaa"
+
+level09@SnowCrash:~$ ./level09 "aaaaaaaaa"
+abcdefghi
+
+on voit que le programme parcoure la chaine en incrementant la valeur ascii de chaque caractere de sa position.
+
+argv[1][0] reste a
+argv[1][1] devient b
+argv[1][2] devient c
+etc ....
+
+Pour dechiffrer le token nous avons juste a faire un programme qui parcoure la chaine et qui decremente chaque octet.
+
+Quand on execute notre programme avec le fichier en parametre nous avons notre chaine :)
+
+il ne reste plus qu'a lancer "su flag09" et "getflag"
