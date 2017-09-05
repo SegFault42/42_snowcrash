@@ -1,0 +1,25 @@
+Ici nous avons un programme qui lit un fichier.
+
+nous avons le token ecris dans un fichier, mais pas de droit de lecture.
+
+Nous devons donc executer le binaire level08 qui a les droits pour lire le fichier token.
+
+Si on execute simplement le binaire avec token en parametre, le programme nous renvoie une erreur.
+
+Si on fait un "strings level08"
+
+On peu voir qu'il y a un strstr, token, Unable to open %s, printf ...
+
+On peut donc deduire que le programme prend un parametre et l'affiche sur STDOUT.
+
+Apres quelque test on remarque qu'il n'y a que le fichier token qui nous renvoie une erreur.
+
+Surement le strstr qui verifie si la string contient la chaine token.
+
+Nous ne pouvons pas copier le fichier pour le donner un autre nom parce que nous n'avons pas de droit sur le fichier.
+
+On peut par contre faire un lien dessus et passer ce lien dans argv[1].
+
+Si on fait ln -s $PWD/token /tmp/link et ue nous passons ce lien en parametre, le programme lie et affiche le fichier car il a les droits dessus et ne s'apelle pas token.
+
+Nous avons le token et nous pouvons lancer su flag08 puis getflag
