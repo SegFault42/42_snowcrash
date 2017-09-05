@@ -1,0 +1,27 @@
+https://cybergibbons.com/security-2/nebula-walkthrough/nebula-exploit-exercises-walkthrough-level02/
+
+Encore un exercice avec les setuid et la fonction system.
+
+Ici le programme affiche la variable d'environement LOGNAME.
+
+en faisant un strings on remarque cette ligne "/bin/echo %s" et en faisant un nm sur le binaire ou remarque qu'un asprintf est utiliser.
+
+Ce qu'i nous laisse penser que "/bin/echo %s" est stocker dans un buffer par asprintf.
+
+puis le contenue du buffer est le parametre de system()
+
+ce qui donne system("/bin/echo $LOGNAME") (LOGNAME vaut ici level07)
+
+si on modifie la variable LOGNAME par une commande shell, la commande va s'executer avec les droit de level07.
+
+LOGNAME="getflag"
+
+cette ligne ne fonctionnera pas parce que sa va simplement faire un echo getflag
+
+il faut plutot faire 
+
+LOGNAME="; getflag"
+
+ce qui donnera system(/bin/echo; getflag);
+
+nous aurons bien get flag executer comme une commande et non pas un parametre de echo
