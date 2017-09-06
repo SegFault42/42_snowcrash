@@ -1,0 +1,15 @@
+Dans cette exercice nous avons un script lua qui communique avec le port 5151 puis recupere un mot de passe, le hash et verifie si la chaine hashe correspond a celle hard code.
+
+En faisant ls -l on voit que le programme s'execute avec les droits de flag11.
+
+la fonction io.popen execute une commande et ecris le resultat dans un fichier.
+
+Elle prend pass en parametre qui est concatener avec echo et | sha1sum
+
+Pour passer notre string au programme on passe par "netcat localhost 5151" (voir ligne 3)
+
+si on remplace pass par ;getflag (ce qui donne echo ; getflag > /tmp/output| sha1sum)
+
+la fonction va executer echo puis getflag et ecrire l'output dans un fichier.
+
+Nous avons notre token dans le fichier output
