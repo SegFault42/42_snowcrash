@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 
 	buff[ret] = 0;
 
-	for (int i = 0; i < strlen(buff); ++i)
+	for (int i = 0; i < ret -1; ++i)
 	{
 		printf("%c", buff[i] - j);
 		++j;
