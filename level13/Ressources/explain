@@ -1,0 +1,27 @@
+http://deamonftp.free.fr/deamoncrack/Pages/cours1.htm
+
+Dans cette exercice, nous avons un binaire qui appelle la fonction getuid et qui compare le retour avec 0x1092 (4242)
+
+Si getuid renvoie autre chose que 4242, le programme exit sinon il affiche le token.
+
+1) break getuid
+avec gdb, set un breakpoint a l'instruction getuid.
+
+2) step
+avancer l'execution d'une ligne.
+
+3) disas
+Nous voyons que nous sommes a l'instruction cmp.
+Ici le programme compare le retour de getuid avec la valeur 4242.
+
+je (jump if equal) Si c'est egal le prgramme jump a l'adresse pour afficher le token.
+
+Sinon il exit
+
+Ce qu'il faut faire, c'est inversser la condition.
+
+on set  (set *(char*)0x0804859f = 0x75a) l'adresse ou le programme check la condition 0x75 = jne (jump if not equal)
+
+on peut voir que je est devenue jne en faisant un disas
+
+on continue le programme (continue) et nous avons le token d'afficher.
