@@ -1,0 +1,28 @@
+Dans ce niveau, il n'y a pas de binaire a exploiter.
+
+Il faut directement exploiter /bin/getflag.
+
+On lance gdb /bin/getflag
+
+1) start
+	Lance le binaire avec un breakpoint sur le main
+	Le binaire verifie avec ptrace si on utilise un debugueur.
+	Nous allons modifier le retour de ptrace pour bypass la verification.
+
+2) disas, break *0x0804898e
+	On met un breakpoint a la ligne 72 (Comparaison du retour de ptrace)
+
+3) set $eax = 0
+	La valeur de retour de ptrace est est set a 0 au lieu de -1.
+
+4) breakpoint *0x08048b0a
+	On set un breakpoint a la ligne 452
+
+	On est dans une foret de if. Le programme verifie l'id est affiche le token.
+	Nous avons besoin de l'id 3014 qui correspond au compte level14 (voir /etc/passwd)
+
+5) set $eax = 0xbc6
+	On set eax a 3014.
+
+6) continue
+	On a le token :)
